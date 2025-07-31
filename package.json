@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -H localhost -p 3000",
     "build": "next build",
-    "start": "next start",
+    "start": "serve dist",
     "lint": "next lint"
   },
   "dependencies": {
