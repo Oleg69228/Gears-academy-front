@@ -19,7 +19,7 @@ import {
   Globe,
   Brain,
   Headphones,
-  Calendar,
+  BookOpen,
 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -230,7 +230,7 @@ export default function OnlineSchoolLanding() {
                       <Users className="w-4 h-4 text-blue-600" />
                     </div>
                     <div>
-                      <div className="text-sm font-medium">1,247 студентов</div>
+                      <div className="text-sm font-medium">36 студентов</div>
                       <div className="text-xs text-gray-500">изучают сейчас</div>
                     </div>
                   </div>
@@ -347,96 +347,120 @@ export default function OnlineSchoolLanding() {
         </section>
         {/* Courses Section */}
         <section className="py-20 bg-gray-50" id="courses">
-            <div className="container px-4 md:px-6">
-              <div className="text-center mb-16">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Популярные курсы</h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Выберите направление и начните путь к новой профессии уже сегодня
-                </p>
-              </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {coursesData.slice(0, showAllCourses ? coursesData.length : 3).map((course, index) => (
-                  <Card
-                    key={course.id}
-                    className="overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-2"
-                    style={{ animationDelay: `${index * 200}ms` }}
+      <div className="container px-4 md:px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Популярные курсы</h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Выберите направление и начните путь к новой профессии уже сегодня
+          </p>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {coursesData.slice(0, showAllCourses ? coursesData.length : 3).map((course, index) => (
+            <Card
+              key={course.id}
+              className={`overflow-hidden transition-all duration-500 group ${
+                course.price === "БЕСПЛАТНО"
+                  ? "bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 border-2 border-green-300 hover:border-green-400 hover:shadow-2xl hover:-translate-y-3 ring-2 ring-green-200 ring-opacity-50"
+                  : "hover:shadow-xl hover:-translate-y-2"
+              }`}
+              style={{ animationDelay: `${index * 200}ms` }}
+            >
+              <div className="relative h-48 overflow-hidden">
+                <Image
+                  src={course.image || "/placeholder.svg"}
+                  alt={course.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                {course.badge && (
+                  <Badge
+                    className={`absolute top-4 left-4 ${course.badge.color} text-white`}
+                    style={{ animationDelay: `${index * 200 + 300}ms` }}
                   >
-                    <div className="relative h-48 overflow-hidden">
-                      <Image
-                        src={course.image || "/placeholder.svg"}
-                        alt={course.title}
-                        fill
-                        className="object-cover transition-transform duration-500 hover:scale-110"
-                      />
-                      {course.badge && (
-                        <Badge
-                          className={`absolute top-4 left-4 ${course.badge.color} `}
-                          style={{ animationDelay: `${index * 200 + 300}ms` }}
-                        >
-                          {course.badge.text}
-                        </Badge>
-                      )}
-                    </div>
-                    <CardHeader>
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge variant="secondary">{course.duration}</Badge>
-                        <div className="flex items-center">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                          <span className="text-sm">{course.rating}</span>
-                        </div>
-                      </div>
-                      <CardTitle className="transition-colors duration-300 hover:text-blue-600">
-                        {course.title}
-                      </CardTitle>
-                      <CardDescription>{course.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="flex items-center text-sm text-gray-600">
-                          <Clock className="h-4 w-4 mr-2" />
-                          {course.hours}
-                        </div>
-                        <div className="flex items-center text-sm text-gray-600">
-                          <Users className="h-4 w-4 mr-2" />
-                          {course.students}
-                        </div>
-                        <div className="flex items-center justify-between pt-4">
-                          <div>
-                            <span
-                              className={`text-2xl font-bold transition-all duration-300 ${
-                                course.price === "БЕСПЛАТНО" ? "bg-green-50 px-3 py-1 rounded-md text-green-600" : ""
-                              }`}
-                            >
-                              {course.price}
-                            </span>
-                            {course.oldPrice && (
-                              <span className="text-sm text-gray-500 line-through ml-2">{course.oldPrice}</span>
-                            )}
-                          </div>
-                          <Button
-                            onClick={() => handleOpenCourseModal(course)}
-                            className="transition-all duration-300 hover:scale-105"
-                          >
-                            Подробнее
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-              <div className="text-center mt-12">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="transition-all duration-300 hover:scale-105 bg-transparent"
-                  onClick={() => setShowAllCourses(!showAllCourses)}
+                    {course.badge.text}
+                  </Badge>
+                )}
+                {course.price === "БЕСПЛАТНО" && (
+                  <div className="absolute top-4 left-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-full font-bold text-sm shadow-lg animate-pulse">
+                    🎉 БЕСПЛАТНО
+                  </div>
+                )}
+                <div
+                  className={`absolute top-4 right-4 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1 ${
+                    course.price === "БЕСПЛАТНО" ? "bg-green-500/90 text-white" : "bg-white/90"
+                  }`}
                 >
-                  {showAllCourses ? "Скрыть" : "Посмотреть все курсы" }
-                </Button>
+                  <Star
+                    className={`h-4 w-4 ${course.price === "БЕСПЛАТНО" ? "fill-yellow-300 text-yellow-300" : "fill-yellow-400 text-yellow-400"}`}
+                  />
+                  <span className="text-sm font-medium">{course.rating}</span>
+                </div>
               </div>
-            </div>
-          </section>
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Badge variant="secondary" className="text-xs">
+                    {course.duration}
+                  </Badge>
+                  {course.price === "БЕСПЛАТНО" && (
+                    <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 text-xs font-bold shadow-md">
+                      ⚡ Быстрый старт
+                    </Badge>
+                  )}
+                </div>
+                <CardTitle
+                  className={`transition-colors duration-300 leading-tight ${
+                    course.price === "БЕСПЛАТНО"
+                      ? "text-green-800 group-hover:text-green-600"
+                      : "group-hover:text-blue-600"
+                  }`}
+                >
+                  {course.title}
+                </CardTitle>
+                <CardDescription className="text-sm leading-relaxed">{course.description}</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Clock
+                      className={`h-4 w-4 mr-2 ${course.price === "БЕСПЛАТНО" ? "text-green-500" : "text-blue-500"}`}
+                    />
+                    <span>{course.hours} часов практики</span>
+                  </div>
+                  <div className="flex items-center text-sm text-gray-600">
+                    <Users
+                      className={`h-4 w-4 mr-2 ${course.price === "БЕСПЛАТНО" ? "text-green-500" : "text-green-500"}`}
+                    />
+                    <span>{course.students} студентов</span>
+                  </div>
+                  
+                </div>
+                <Button
+                  onClick={() => handleOpenCourseModal(course)}
+                  className={`w-full transition-all duration-300 hover:scale-105 ${
+                    course.price === "БЕСПЛАТНО"
+                      ? "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg hover:shadow-xl text-white font-bold"
+                      : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  }`}
+                  size="lg"
+                >
+                  {course.price === "БЕСПЛАТНО" ? "🚀 Начать бесплатно" : course.button}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <div className="text-center mt-12">
+          <Button
+            variant="outline"
+            size="lg"
+            className="transition-all duration-300 hover:scale-105 bg-transparent border-2 hover:bg-blue-50 hover:border-blue-300"
+            onClick={() => setShowAllCourses(!showAllCourses)}
+          >
+            {showAllCourses ? "Скрыть" : "Посмотреть все курсы"}
+          </Button>
+        </div>
+      </div>
+    </section>
         {/* Teachers Section */}
         <section className="py-20" id="teachers">
           <div className="container px-4 md:px-6">
@@ -553,7 +577,11 @@ export default function OnlineSchoolLanding() {
               </Card>
             </div>
             <div className="text-center mt-12">
-              <Button variant="outline" size="lg">
+              <Button 
+              variant="outline" 
+              size="lg"
+              className="transition-all duration-300 hover:scale-105 bg-transparent border-2 hover:bg-blue-50 hover:border-blue-300"
+              >
                 Читать все отзывы
               </Button>
             </div>

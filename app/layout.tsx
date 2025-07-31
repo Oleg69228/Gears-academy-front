@@ -8,8 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Gears Academy - IT онлайн школа",
   description:
-    "Практические курсы от ведущих экспертов индустрии. Получите востребованные навыки и найдите работу мечты за 6-12 месяцев.",
-    generator: 'v0.dev'
+    "Практические курсы от ведущих экспертов индустрии. Получите востребованные навыки и найдите работу мечты за 6-12 месяцев."
 }
 
 export default function RootLayout({

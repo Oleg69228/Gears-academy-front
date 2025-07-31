@@ -24,7 +24,7 @@ export const coursesData: Course[] = [
     
     duration: "8 занятий",
     rating: 4.9,
-    students: "57 студентов",
+    students: "57",
     price: "БЕСПЛАТНО",
     oldPrice: "₽12,900",
     details: [
@@ -36,7 +36,7 @@ export const coursesData: Course[] = [
       "Практические задания и обратная связь от ментора.",
     ],
     button: "Пройти курс",
-    hours: "9 часов практики"
+    hours: "9"
 },
 {
     id: "backend-dev",
@@ -47,7 +47,7 @@ export const coursesData: Course[] = [
     badge: { text: "Хит продаж", color: "bg-green-600" },
     duration: "10 месяцев",
     rating: 4.8,
-    students: "42 студентов",
+    students: "42",
     price: "₽99,900",
     oldPrice: "₽149,900",
     details: [
@@ -62,7 +62,7 @@ export const coursesData: Course[] = [
         "Создание 3-4 полноценных бэкенд-проектов для портфолио.",
     ],
     button: "Записаться на пробный урок",
-    hours: "200+ часов практики"
+    hours: "200+"
   },
   {
     id: "frontend-dev",
@@ -73,13 +73,13 @@ export const coursesData: Course[] = [
     badge: { text: "Новый", color: "bg-blue-600" },
     duration: "8 месяцев",
     rating: 4.9,
-    students: "3,156 студентов",
+    students: "56",
     price: "₽79,900",
     oldPrice: "₽119,900",
     details: [
       "Продвинутый JavaScript: замыкания, прототипы, асинхронность, ES6+.",
       "Выбор фреймворка: React.js или Vue.js (на выбор студента).",
-      "Продвинутая верстка: CSS-модули, SCSS, CSS-in-JS, с��ожные анимации.",
+      "Продвинутая верстка: CSS-модули, SCSS, CSS-in-JS, сложные анимации.",
       "Интеграция с RESTful и GraphQL API.",
       "Управление состоянием приложения: Redux, Vuex, Context API, Zustand.",
       "Использование TypeScript для создания надежного и масштабируемого кода.",
@@ -88,7 +88,7 @@ export const coursesData: Course[] = [
       "Разработка 4-5 сложных одностраничных приложений (SPA) и интерактивных интерфейсов.",
     ],
     button: "Записаться на пробный урок",
-    hours: "200+ часов практики"
+    hours: "200+"
   },
   {
     id: "mobile-dev",
