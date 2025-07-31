@@ -1,5 +1,8 @@
 "use client"
 
+import type React from "react"
+
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -16,48 +19,83 @@ import {
   Globe,
   Brain,
   Headphones,
-  MessageCircle,
   Calendar,
-  Download,
 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { CourseDetailsDialog } from "@/components/course-details-dialog"
+import { RegistrationFormDialog } from "@/components/registration-form-dialog" // Import the new component
+import { coursesData, type Course } from "@/lib/courses"
+import { teachersData } from "@/lib/teachers" // Import teachers data
+import { TeachersCarousel } from "@/components/teachers-carousel" // Import the new carousel component
+import { ExclusiveSection } from "@/components/exclusive-section"
+import { RegistrationForm } from "@/components/registration-form"
 const scrollToСourses = (e: React.MouseEvent) => {
-  e.preventDefault();
-  const aboutSection = document.getElementById('courses');
-  if (aboutSection) {
-    aboutSection.scrollIntoView({ behavior: 'smooth' });
+  e.preventDefault()
+  const coursesSection = document.getElementById("courses")
+  if (coursesSection) {
+    coursesSection.scrollIntoView({ behavior: "smooth" })
   }
-};
+}
+
 const scrollToAbout = (e: React.MouseEvent) => {
-  e.preventDefault();
-  const aboutSection = document.getElementById('about');
+  e.preventDefault()
+  const aboutSection = document.getElementById("about")
   if (aboutSection) {
-    aboutSection.scrollIntoView({ behavior: 'smooth' });
+    aboutSection.scrollIntoView({ behavior: "smooth" })
   }
-};
+}
+
 const scrollToTeachers = (e: React.MouseEvent) => {
-  e.preventDefault();
-  const aboutSection = document.getElementById('teachers');
-  if (aboutSection) {
-    aboutSection.scrollIntoView({ behavior: 'smooth' });
+  e.preventDefault()
+  const teachersSection = document.getElementById("teachers")
+  if (teachersSection) {
+    teachersSection.scrollIntoView({ behavior: "smooth" })
   }
-};
+}
+
 const scrollToReviews = (e: React.MouseEvent) => {
-  e.preventDefault();
-  const aboutSection = document.getElementById('reviews');
-  if (aboutSection) {
-    aboutSection.scrollIntoView({ behavior: 'smooth' });
+  e.preventDefault()
+  const reviewsSection = document.getElementById("reviews")
+  if (reviewsSection) {
+    reviewsSection.scrollIntoView({ behavior: "smooth" })
   }
-};
+}
+
 const scrollToContact = (e: React.MouseEvent) => {
-  e.preventDefault();
-  const aboutSection = document.getElementById('contact');
-  if (aboutSection) {
-    aboutSection.scrollIntoView({ behavior: 'smooth' });
+  e.preventDefault()
+  const contactSection = document.getElementById("contact")
+  if (contactSection) {
+    contactSection.scrollIntoView({ behavior: "smooth" })
   }
-};
+}
+
 export default function OnlineSchoolLanding() {
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
+  const [isCourseModalOpen, setIsCourseModalOpen] = useState(false)
+  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false) // New state for registration modal
+  const [showAllCourses, setShowAllCourses] = useState(false)
+
+  
+  const handleOpenCourseModal = (course: Course) => {
+    setSelectedCourse(course)
+    setIsCourseModalOpen(true)
+  }
+
+  const handleCloseCourseModal = () => {
+    setIsCourseModalOpen(false)
+    setSelectedCourse(null)
+  }
+
+  const handleOpenRegistrationModal = () => {
+    setIsRegistrationModalOpen(true)
+  }
+
+  const handleCloseRegistrationModal = () => {
+    setIsRegistrationModalOpen(false)
+  }
+
+  
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Header */}
@@ -67,43 +105,58 @@ export default function OnlineSchoolLanding() {
             <div className="flex h-5 w-45 items-center justify-center rounded-lg ">
               <Link href={"#"}>
                 <Image
-                    src="/Logo.svg?height=20&width=187&text=Студент изучает онлайн курс"
-                    alt="Студент изучает онлайн курс"
-                    width={187}
-                    height={20}
-                    
-                  />
+                  src="/Logo.svg?height=20&width=187&text=Логотип GearsAcademy"
+                  alt="Логотип GearsAcademy"
+                  width={187}
+                  height={20}
+                />
               </Link>
             </div>
           </div>
-
           <nav className="hidden md:flex items-center space-x-8">
-            <Link onClick={scrollToСourses} href="#courses" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
+            <Link
+              onClick={scrollToСourses}
+              href="#courses"
+              className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+            >
               Курсы
             </Link>
-            <Link onClick={scrollToAbout} href="#about" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
+            <Link
+              onClick={scrollToAbout}
+              href="#about"
+              className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+            >
               О школе
             </Link>
-            <Link onClick={scrollToTeachers} href="#teachers" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
+            <Link
+              onClick={scrollToTeachers}
+              href="#teachers"
+              className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+            >
               Преподаватели
             </Link>
-            <Link onClick={scrollToReviews} href="#reviews" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
+            <Link
+              onClick={scrollToReviews}
+              href="#reviews"
+              className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+            >
               Отзывы
             </Link>
-            <Link onClick={scrollToContact} href="#contact" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
+            <Link
+              onClick={scrollToContact}
+              href="#contact"
+              className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+            >
               Контакты
             </Link>
           </nav>
-
           <div className="flex items-center space-x-4">
-            
-            <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+            <Button size="sm" className="bg-blue-600 hover:bg-blue-700" onClick={handleOpenRegistrationModal}>
               Записаться
             </Button>
           </div>
         </div>
       </header>
-
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative py-20 md:py-32 bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -113,22 +166,25 @@ export default function OnlineSchoolLanding() {
                 <div className="space-y-4">
                   <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100">🎓 Более 100 выпускников</Badge>
                   <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
-                    Первая <span className="text-blue-600">IT</span><br />онлайн-школа с использованием <span className="text-blue-600">ИИ</span>
+                    Первая <span className="text-blue-600">IT</span>
+                    <br />
+                    онлайн-школа с использованием <span className="text-blue-600">ИИ</span>
                   </h1>
                   <p className="text-xl text-gray-600 max-w-[600px]">
                     Практические курсы от ведущих экспертов индустрии. Получите востребованные навыки и найдите работу
                     мечты за 6-12 месяцев.
                   </p>
                 </div>
-
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg px-8">
+                  <Button
+                    size="lg"
+                    className="bg-blue-600 hover:bg-blue-700 text-lg px-8"
+                    onClick={handleOpenRegistrationModal}
+                  >
                     <Play className="mr-2 h-5 w-5" />
                     Записаться на урок
                   </Button>
-                  
                 </div>
-
                 <div className="flex items-center space-x-8 pt-4">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-gray-900">4.9</div>
@@ -139,14 +195,12 @@ export default function OnlineSchoolLanding() {
                     </div>
                     <div className="text-sm text-gray-600">Рейтинг</div>
                   </div>
-                  
                   <div className="text-center">
                     <div className="text-2xl font-bold text-gray-900">24/7</div>
                     <div className="text-sm text-gray-600">Поддержка</div>
                   </div>
                 </div>
               </div>
-
               <div className="relative">
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                   <Image
@@ -158,7 +212,6 @@ export default function OnlineSchoolLanding() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 </div>
-
                 {/* Floating cards */}
                 <div className="absolute -top-4 -left-4 bg-white rounded-lg shadow-lg p-4 border">
                   <div className="flex items-center space-x-2">
@@ -171,7 +224,6 @@ export default function OnlineSchoolLanding() {
                     </div>
                   </div>
                 </div>
-
                 <div className="absolute -bottom-4 -right-4 bg-white rounded-lg shadow-lg p-4 border">
                   <div className="flex items-center space-x-2">
                     <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
@@ -187,7 +239,6 @@ export default function OnlineSchoolLanding() {
             </div>
           </div>
         </section>
-
         {/* Stats Section */}
         <section className="py-16 bg-gray-50">
           <div className="container px-4 md:px-6">
@@ -211,7 +262,6 @@ export default function OnlineSchoolLanding() {
             </div>
           </div>
         </section>
-
         {/* Features Section */}
         <section className="py-20" id="about">
           <div className="container px-4 md:px-6">
@@ -221,7 +271,6 @@ export default function OnlineSchoolLanding() {
                 Мы создали идеальную среду для онлайн-обучения с персональным подходом к каждому студенту
               </p>
             </div>
-
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                 <CardHeader>
@@ -234,7 +283,6 @@ export default function OnlineSchoolLanding() {
                   </CardDescription>
                 </CardHeader>
               </Card>
-
               <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                 <CardHeader>
                   <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
@@ -242,11 +290,11 @@ export default function OnlineSchoolLanding() {
                   </div>
                   <CardTitle>Индивидуальное обучение</CardTitle>
                   <CardDescription>
-                    Персональный подход, гибкий график и программа под ваш запрос. Освойте материал с поддержкой эксперта.
+                    Персональный подход, гибкий график и программа под ваш запрос. Освойте материал с поддержкой
+                    эксперта.
                   </CardDescription>
                 </CardHeader>
               </Card>
-
               <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                 <CardHeader>
                   <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
@@ -258,7 +306,6 @@ export default function OnlineSchoolLanding() {
                   </CardDescription>
                 </CardHeader>
               </Card>
-
               <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                 <CardHeader>
                   <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
@@ -266,11 +313,11 @@ export default function OnlineSchoolLanding() {
                   </div>
                   <CardTitle>Вебинары каждую неделю</CardTitle>
                   <CardDescription>
-                    Прямые эфиры с практиками и разбором кейсов. Участвуйте, обсуждайте и прокачивайте навыки в режиме онлайн.
+                    Прямые эфиры с практиками и разбором кейсов. Участвуйте, обсуждайте и прокачивайте навыки в режиме
+                    онлайн.
                   </CardDescription>
                 </CardHeader>
               </Card>
-
               <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                 <CardHeader>
                   <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
@@ -278,11 +325,11 @@ export default function OnlineSchoolLanding() {
                   </div>
                   <CardTitle>Курсы от лидеров сферы</CardTitle>
                   <CardDescription>
-                    Только актуальные методики и кейсы от тех, кто уже добился успеха в вашей нише. Никакой теории «из учебников» — только рабочие инструменты!
+                    Только актуальные методики и кейсы от тех, кто уже добился успеха в вашей нише. Никакой теории «из
+                    учебников» — только рабочие инструменты!
                   </CardDescription>
                 </CardHeader>
               </Card>
-
               <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                 <CardHeader>
                   <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
@@ -296,159 +343,100 @@ export default function OnlineSchoolLanding() {
               </Card>
             </div>
           </div>
+        <ExclusiveSection/>
         </section>
-
         {/* Courses Section */}
         <section className="py-20 bg-gray-50" id="courses">
-          <div className="container px-4 md:px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Популярные курсы</h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Выберите направление и начните путь к новой профессии уже сегодня
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <Card className="overflow-hidden hover:shadow-xl transition-shadow">
-                <div className="relative h-48">
-                  <Image
-                    src="/placeholder.svg?height=200&width=400&text=Веб-разработка"
-                    alt="Веб-разработка"
-                    fill
-                    className="object-cover"
-                  />
-                  <Badge className="absolute top-4 left-4 bg-green-600">Хит продаж</Badge>
-                </div>
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-2">
-                    <Badge variant="secondary">8 занятий</Badge>
-                    <div className="flex items-center">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                      <span className="text-sm">4.9</span>
+            <div className="container px-4 md:px-6">
+              <div className="text-center mb-16">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Популярные курсы</h2>
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                  Выберите направление и начните путь к новой профессии уже сегодня
+                </p>
+              </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {coursesData.slice(0, showAllCourses ? coursesData.length : 3).map((course, index) => (
+                  <Card
+                    key={course.id}
+                    className="overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-2"
+                    style={{ animationDelay: `${index * 200}ms` }}
+                  >
+                    <div className="relative h-48 overflow-hidden">
+                      <Image
+                        src={course.image || "/placeholder.svg"}
+                        alt={course.title}
+                        fill
+                        className="object-cover transition-transform duration-500 hover:scale-110"
+                      />
+                      {course.badge && (
+                        <Badge
+                          className={`absolute top-4 left-4 ${course.badge.color} `}
+                          style={{ animationDelay: `${index * 200 + 300}ms` }}
+                        >
+                          {course.badge.text}
+                        </Badge>
+                      )}
                     </div>
-                  </div>
-                  <CardTitle>Мини-курс по веб-разработке</CardTitle>
-                  <CardDescription>
-                    Основы HTML, CSS и JavaScript. Создание и верстка сайтов. Практика + деплой проекта. Быстрый старт для новичков.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Clock className="h-4 w-4 mr-2" />
-                      9 часов практики
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Users className="h-4 w-4 mr-2" />
-                      57 студентов
-                    </div>
-                    <div className="flex items-center justify-between pt-4">
-                      <div>
-                        <span className="text-2xl font-bold bg-green-600 px-3 py-1 rounded-md text-primary-foreground" >БЕСПЛАТНО</span>
-                        <span className="text-sm text-gray-500 line-through ml-2">₽12,900</span>
+                    <CardHeader>
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge variant="secondary">{course.duration}</Badge>
+                        <div className="flex items-center">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
+                          <span className="text-sm">{course.rating}</span>
+                        </div>
                       </div>
-                      <Button>Подробнее</Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="overflow-hidden hover:shadow-xl transition-shadow">
-                <div className="relative h-48">
-                  <Image
-                    src="/placeholder.svg?height=200&width=400&text=Data Science"
-                    alt="Data Science"
-                    fill
-                    className="object-cover"
-                  />
-                  <Badge className="absolute top-4 left-4 bg-blue-600">Новый</Badge>
-                </div>
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-2">
-                    <Badge variant="secondary">10 месяцев</Badge>
-                    <div className="flex items-center">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                      <span className="text-sm">4.8</span>
-                    </div>
-                  </div>
-                  <CardTitle>Backend-разработка</CardTitle>
-                  <CardDescription>
-                    Разработка на Node.js/Python/Go, работа с базами (PostgreSQL, MongoDB), создание API (REST, GraphQL), аутентификация, кеширование, микросервисы, DevOps-настройки (Docker, CI/CD) и деплой в облако. Реальные проекты в портфолио.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Clock className="h-4 w-4 mr-2" />
-                      180+ часов практики
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Users className="h-4 w-4 mr-2" />
-                      42 студентов
-                    </div>
-                    <div className="flex items-center justify-between pt-4">
-                      <div>
-                        <span className="text-2xl font-bold">₽99,900</span>
-                        <span className="text-sm text-gray-500 line-through ml-2">₽149,900</span>
+                      <CardTitle className="transition-colors duration-300 hover:text-blue-600">
+                        {course.title}
+                      </CardTitle>
+                      <CardDescription>{course.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="flex items-center text-sm text-gray-600">
+                          <Clock className="h-4 w-4 mr-2" />
+                          {course.hours}
+                        </div>
+                        <div className="flex items-center text-sm text-gray-600">
+                          <Users className="h-4 w-4 mr-2" />
+                          {course.students}
+                        </div>
+                        <div className="flex items-center justify-between pt-4">
+                          <div>
+                            <span
+                              className={`text-2xl font-bold transition-all duration-300 ${
+                                course.price === "БЕСПЛАТНО" ? "bg-green-50 px-3 py-1 rounded-md text-green-600" : ""
+                              }`}
+                            >
+                              {course.price}
+                            </span>
+                            {course.oldPrice && (
+                              <span className="text-sm text-gray-500 line-through ml-2">{course.oldPrice}</span>
+                            )}
+                          </div>
+                          <Button
+                            onClick={() => handleOpenCourseModal(course)}
+                            className="transition-all duration-300 hover:scale-105"
+                          >
+                            Подробнее
+                          </Button>
+                        </div>
                       </div>
-                      <Button>Подробнее</Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="overflow-hidden hover:shadow-xl transition-shadow">
-                <div className="relative h-48">
-                  <Image
-                    src="/placeholder.svg?height=200&width=400&text=UX/UI Дизайн"
-                    alt="UX/UI Дизайн"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-2">
-                    <Badge variant="secondary">8 месяцев</Badge>
-                    <div className="flex items-center">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                      <span className="text-sm">4.9</span>
-                    </div>
-                  </div>
-                  <CardTitle>Frontend-разработка</CardTitle>
-                  <CardDescription>
-                    глубокое погружение в JavaScript (ES6+), React/Vue, продвинутая вёрстка (CSS/SCSS, анимации), работа с API, state-менеджмент (Redux/Vuex), TypeScript, оптимизация и тестирование. Создание SPA и сложных интерфейсов с нуля.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Clock className="h-4 w-4 mr-2" />
-                      150+ часов практики
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Users className="h-4 w-4 mr-2" />
-                      3,156 студентов
-                    </div>
-                    <div className="flex items-center justify-between pt-4">
-                      <div>
-                        <span className="text-2xl font-bold">₽79,900</span>
-                        <span className="text-sm text-gray-500 line-through ml-2">₽119,900</span>
-                      </div>
-                      <Button>Подробнее</Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              <div className="text-center mt-12">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="transition-all duration-300 hover:scale-105 bg-transparent"
+                  onClick={() => setShowAllCourses(!showAllCourses)}
+                >
+                  {showAllCourses ? "Скрыть" : "Посмотреть все курсы" }
+                </Button>
+              </div>
             </div>
-
-            <div className="text-center mt-12">
-              <Button variant="outline" size="lg">
-                Посмотреть все курсы
-              </Button>
-            </div>
-          </div>
-        </section>
-
+          </section>
         {/* Teachers Section */}
         <section className="py-20" id="teachers">
           <div className="container px-4 md:px-6">
@@ -459,114 +447,10 @@ export default function OnlineSchoolLanding() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <Card className="text-center border-0 shadow-lg">
-                <CardHeader>
-                  <div className="relative w-24 h-24 mx-auto mb-4">
-                    <Image
-                      src="/placeholder.svg?height=100&width=100&text=Анна Петрова"
-                      alt="Анна Петрова"
-                      fill
-                      className="rounded-full object-cover"
-                    />
-                  </div>
-                  <CardTitle className="text-lg">Анна Петрова</CardTitle>
-                  <CardDescription>Senior Frontend Developer</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600 mb-4">8 лет в Яндексе, ментор 500+ разработчиков</p>
-                  <div className="flex justify-center space-x-2">
-                    <Badge variant="secondary" className="text-xs">
-                      React
-                    </Badge>
-                    <Badge variant="secondary" className="text-xs">
-                      TypeScript
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center border-0 shadow-lg">
-                <CardHeader>
-                  <div className="relative w-24 h-24 mx-auto mb-4">
-                    <Image
-                      src="/placeholder.svg?height=100&width=100&text=Михаил Иванов"
-                      alt="Михаил Иванов"
-                      fill
-                      className="rounded-full object-cover"
-                    />
-                  </div>
-                  <CardTitle className="text-lg">Михаил Иванов</CardTitle>
-                  <CardDescription>Lead Data Scientist</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600 mb-4">10 лет в Сбербанке, PhD в области ML</p>
-                  <div className="flex justify-center space-x-2">
-                    <Badge variant="secondary" className="text-xs">
-                      Python
-                    </Badge>
-                    <Badge variant="secondary" className="text-xs">
-                      ML
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center border-0 shadow-lg">
-                <CardHeader>
-                  <div className="relative w-24 h-24 mx-auto mb-4">
-                    <Image
-                      src="/placeholder.svg?height=100&width=100&text=Елена Смирнова"
-                      alt="Елена Смирнова"
-                      fill
-                      className="rounded-full object-cover"
-                    />
-                  </div>
-                  <CardTitle className="text-lg">Елена Смирнова</CardTitle>
-                  <CardDescription>Head of Design</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600 mb-4">6 лет в Mail.ru, автор 50+ интерфейсов</p>
-                  <div className="flex justify-center space-x-2">
-                    <Badge variant="secondary" className="text-xs">
-                      Figma
-                    </Badge>
-                    <Badge variant="secondary" className="text-xs">
-                      UX
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center border-0 shadow-lg">
-                <CardHeader>
-                  <div className="relative w-24 h-24 mx-auto mb-4">
-                    <Image
-                      src="/placeholder.svg?height=100&width=100&text=Дмитрий Козлов"
-                      alt="Дмитрий Козлов"
-                      fill
-                      className="rounded-full object-cover"
-                    />
-                  </div>
-                  <CardTitle className="text-lg">Дмитрий Козлов</CardTitle>
-                  <CardDescription>Senior Backend Developer</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600 mb-4">12 лет в VK, архитектор highload систем</p>
-                  <div className="flex justify-center space-x-2">
-                    <Badge variant="secondary" className="text-xs">
-                      Node.js
-                    </Badge>
-                    <Badge variant="secondary" className="text-xs">
-                      Go
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            {/* Integrate the TeachersCarousel here */}
+            <TeachersCarousel teachers={teachersData} />
           </div>
         </section>
-
         {/* Reviews Section */}
         <section className="py-20 bg-gray-50" id="reviews">
           <div className="container px-4 md:px-6">
@@ -576,7 +460,6 @@ export default function OnlineSchoolLanding() {
                 Более 100 выпускников уже изменили свою жизнь благодаря нашим курсам
               </p>
             </div>
-
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               <Card className="border-0 shadow-lg">
                 <CardHeader>
@@ -608,7 +491,6 @@ export default function OnlineSchoolLanding() {
                   </p>
                 </CardContent>
               </Card>
-
               <Card className="border-0 shadow-lg">
                 <CardHeader>
                   <div className="flex items-center space-x-4">
@@ -639,7 +521,6 @@ export default function OnlineSchoolLanding() {
                   </p>
                 </CardContent>
               </Card>
-
               <Card className="border-0 shadow-lg">
                 <CardHeader>
                   <div className="flex items-center space-x-4">
@@ -671,7 +552,6 @@ export default function OnlineSchoolLanding() {
                 </CardContent>
               </Card>
             </div>
-
             <div className="text-center mt-12">
               <Button variant="outline" size="lg">
                 Читать все отзывы
@@ -679,7 +559,6 @@ export default function OnlineSchoolLanding() {
             </div>
           </div>
         </section>
-
         {/* FAQ Section */}
         <section className="py-20">
           <div className="container px-4 md:px-6">
@@ -689,7 +568,6 @@ export default function OnlineSchoolLanding() {
                 Ответы на самые популярные вопросы о наших курсах и обучении
               </p>
             </div>
-
             <div className="max-w-3xl mx-auto">
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1">
@@ -700,7 +578,6 @@ export default function OnlineSchoolLanding() {
                     индивидуальной поддержки.
                   </AccordionContent>
                 </AccordionItem>
-
                 <AccordionItem value="item-2">
                   <AccordionTrigger className="text-left">Сколько времени нужно уделять обучению?</AccordionTrigger>
                   <AccordionContent>
@@ -708,16 +585,6 @@ export default function OnlineSchoolLanding() {
                     своем темпе - все материалы доступны 24/7. Средняя продолжительность курсов составляет 6-12 месяцев.
                   </AccordionContent>
                 </AccordionItem>
-
-                <AccordionItem value="item-3">
-                  <AccordionTrigger className="text-left">Гарантируете ли вы трудоустройство?</AccordionTrigger>
-                  <AccordionContent>
-                    Мы предоставляем полную карьерную поддержку: помощь в составлении резюме, подготовка к
-                    собеседованиям, рекомендации работодателям. 95% наших выпускников находят работу в течение 6 месяцев
-                    после окончания курса.
-                  </AccordionContent>
-                </AccordionItem>
-
                 <AccordionItem value="item-4">
                   <AccordionTrigger className="text-left">Можно ли получить возврат денег?</AccordionTrigger>
                   <AccordionContent>
@@ -725,7 +592,6 @@ export default function OnlineSchoolLanding() {
                     Также предусмотрена рассрочка на 12 месяцев без переплат.
                   </AccordionContent>
                 </AccordionItem>
-
                 <AccordionItem value="item-5">
                   <AccordionTrigger className="text-left">Какой документ я получу после окончания?</AccordionTrigger>
                   <AccordionContent>
@@ -738,7 +604,6 @@ export default function OnlineSchoolLanding() {
             </div>
           </div>
         </section>
-
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
           <div className="container px-4 md:px-6">
@@ -748,7 +613,6 @@ export default function OnlineSchoolLanding() {
                 Запишитесь на бесплатную консультацию и узнайте, какой курс подходит именно вам. Наши эксперты помогут
                 составить индивидуальный план обучения.
               </p>
-
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="h-5 w-5" />
@@ -763,15 +627,10 @@ export default function OnlineSchoolLanding() {
                   <span>Доступ к пробному уроку</span>
                 </div>
               </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-                <Input placeholder="Ваш email" className="bg-white text-gray-900 border-0" />
-                <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  Записаться
-                </Button>
+              <div className="text-start">
+                
+                <RegistrationForm/>
               </div>
-
               <p className="text-sm opacity-75 mt-4">
                 Нажимая кнопку, вы соглашаетесь с{" "}
                 <Link href="#" className="underline">
@@ -782,25 +641,23 @@ export default function OnlineSchoolLanding() {
           </div>
         </section>
       </main>
-
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-16" id="contact">
         <div className="container px-4 md:px-6">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-6">
-                  <Image
-                    src="/Logo2.svg?height=20&width=187&text=Студент изучает онлайн курс"
-                    alt="Студент изучает онлайн курс"
-                    width={187}
-                    height={20}
-                  />
+                <Image
+                  src="/Logo2.svg?height=20&width=187&text=Логотип GearsAcademy"
+                  alt="Логотип GearsAcademy"
+                  width={187}
+                  height={20}
+                />
               </div>
               <p className="text-gray-400 mb-6">
                 Онлайн школа для изучения востребованных IT-профессий. Практические курсы от экспертов индустрии.
               </p>
             </div>
-
             <div>
               <h3 className="font-semibold mb-4">Курсы</h3>
               <ul className="space-y-2 text-gray-400">
@@ -831,7 +688,6 @@ export default function OnlineSchoolLanding() {
                 </li>
               </ul>
             </div>
-
             <div>
               <h3 className="font-semibold mb-4">О школе</h3>
               <ul className="space-y-2 text-gray-400">
@@ -842,7 +698,7 @@ export default function OnlineSchoolLanding() {
                 </li>
                 <li>
                   <Link href="#" className="hover:text-white transition-colors">
-                    Вакансии 
+                    Вакансии
                   </Link>
                 </li>
                 <li>
@@ -855,10 +711,8 @@ export default function OnlineSchoolLanding() {
                     Политика конфиденциальности
                   </Link>
                 </li>
-                
               </ul>
             </div>
-
             <div>
               <h3 className="font-semibold mb-4">Контакты</h3>
               <ul className="space-y-2 text-gray-400">
@@ -872,14 +726,12 @@ export default function OnlineSchoolLanding() {
                     Telegram
                   </Link>
                 </li>
-                
               </ul>
             </div>
           </div>
-
           <div className="border-t border-gray-800 mt-12 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className="text-gray-400 text-sm">© {new Date().getFullYear()} EduPro. Все права защищены.</p>
+              <p className="text-gray-400 text-sm">© {new Date().getFullYear()} GearsAcademy Все права защищены.</p>
               <div className="flex items-center space-x-4 mt-4 md:mt-0">
                 <span className="text-gray-400 text-sm">gears.academy@yandex.ru</span>
               </div>
@@ -887,6 +739,9 @@ export default function OnlineSchoolLanding() {
           </div>
         </div>
       </footer>
+
+      <CourseDetailsDialog course={selectedCourse} isOpen={isCourseModalOpen} onClose={handleCloseCourseModal} />
+      <RegistrationFormDialog isOpen={isRegistrationModalOpen} onClose={handleCloseRegistrationModal} />
     </div>
   )
 }

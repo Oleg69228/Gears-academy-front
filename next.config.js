@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export', // это ключевое!
+  basePath: '/your-repo-name', // название твоего GitHub репозитория
+  trailingSlash: true, // важно для корректной работы ссылок на GitHub Pages
   eslint: {
     ignoreDuringBuilds: true,
   },
